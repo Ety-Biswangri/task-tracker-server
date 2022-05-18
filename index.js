@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+require('dotenv').config();
+const { MongoClient, ServerApiVersion, ObjectID } = require('mongodb');
 const port = process.env.PORT || 5000;
 const app = express();
 
@@ -17,31 +18,29 @@ async function run() {
 
         const tasksCollection = client.db("taskTracker").collection("tasks");
 
-        /* app.get('/tasks', async (req, res) => {
+        app.get('/tasks', async (req, res) => {
             const email = req.query.email;
             const query = { email };
             const cursor = tasksCollection.find(query);
             const tasks = await cursor.toArray();
 
             res.send(tasks);
-        }) */
+        })
 
-        /*  app.post('/tasks', async (req, res) => {
-             const newTasks = req.body;
-             console.log(newTasks);
-             const result = await tasksCollection.insertOne(newTasks);
- 
-             res.send(result);
-         }) */
+        app.post('/tasks', async (req, res) => {
+            const newTasks = req.body;
+            const result = await tasksCollection.insertOne(newTasks);
 
-        /* app.delete('/task/:id', async (req, res) => {
+            res.send(result);
+        })
+
+        app.delete('/task/:id', async (req, res) => {
             const id = req.params.id;
-            const query = { _id: ObjectId(id) };
-            console.log(query);
+            const query = { _id: ObjectID(id) };
             const result = await tasksCollection.deleteOne(query);
 
             res.send(result);
-        }) */
+        })
     }
     finally { }
 }
